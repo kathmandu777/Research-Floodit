@@ -81,3 +81,18 @@
 !pip install keras-rl2
 ```
 - resetの部分でobs以外にinfoも渡していたことが原因。しかし、(1,1,2)と認識されていたのは謎。(1,2)であるべき。
+- gpuのほうが遅い
+    - データ量の少なさが原因? https://teratail.com/questions/185545
+- Reusing TensorBoard on port 6006 (pid 9412), started 0:10:57 ago. (Use '!kill 9412' to kill it.)
+    - https://github.com/tensorflow/tensorboard/issues/3186
+    - --port=6006 で解決
+    - 時間を待てば何もしなくても出た
+- 'TensorBoard' object has no attribute '_should_trace'
+```
+詳細な原因は分からないが、以下をインストールして再起動したところ治った。tensorflowが重要かもしれない。
+!pip install tensorflow-gpu==2.3.0
+!pip install tensorflow==2.3.0
+!pip install gym
+!pip install keras
+!pip install keras-rl2
+```
