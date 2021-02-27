@@ -1,0 +1,117 @@
+**************************************************  FloodIt  **************************************************
+action_space      : Discrete(6)
+observation_space : Box(0.0, 5.0, (30, 30), float32)
+reward_range      : (-inf, inf)
+
+**************************************************  Model  **************************************************
+
+Model: "sequential_2"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+flatten_2 (Flatten)          (None, 900)               0         
+_________________________________________________________________
+dense_12 (Dense)             (None, 64)                57664     
+_________________________________________________________________
+activation_12 (Activation)   (None, 64)                0         
+_________________________________________________________________
+dense_13 (Dense)             (None, 128)               8320      
+_________________________________________________________________
+activation_13 (Activation)   (None, 128)               0         
+_________________________________________________________________
+dense_14 (Dense)             (None, 128)               16512     
+_________________________________________________________________
+activation_14 (Activation)   (None, 128)               0         
+_________________________________________________________________
+dense_15 (Dense)             (None, 128)               16512     
+_________________________________________________________________
+activation_15 (Activation)   (None, 128)               0         
+_________________________________________________________________
+dense_16 (Dense)             (None, 64)                8256      
+_________________________________________________________________
+activation_16 (Activation)   (None, 64)                0         
+_________________________________________________________________
+dense_17 (Dense)             (None, 6)                 390       
+_________________________________________________________________
+activation_17 (Activation)   (None, 6)                 0         
+=================================================================
+Total params: 107,654
+Trainable params: 107,654
+Non-trainable params: 0
+_________________________________________________________________
+None
+
+**************************************************  History  **************************************************
+Training for 1000000 steps ...
+Interval 1 (0 steps performed)
+10000/10000 [==============================] - 237s 24ms/step - reward: -0.3344
+7051 episodes - episode_reward: -0.474 [-0.500, 1.472] - loss: 0.005 - mae: 0.399 - mean_q: -0.429 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.653 - life: 62.626 - is_same_action: 0.705
+
+Interval 2 (10000 steps performed)
+10000/10000 [==============================] - 237s 24ms/step - reward: -0.3413
+7160 episodes - episode_reward: -0.477 [-0.500, 0.861] - loss: 0.002 - mae: 0.402 - mean_q: -0.460 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.603 - life: 62.664 - is_same_action: 0.716
+
+Interval 3 (20000 steps performed)
+10000/10000 [==============================] - 238s 24ms/step - reward: -0.3419
+7173 episodes - episode_reward: -0.477 [-0.500, 1.472] - loss: 0.008 - mae: 0.406 - mean_q: -0.456 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.602 - life: 62.658 - is_same_action: 0.717
+
+Interval 4 (30000 steps performed)
+10000/10000 [==============================] - 237s 24ms/step - reward: -0.3380
+7092 episodes - episode_reward: -0.477 [-0.500, 0.556] - loss: 0.001 - mae: 0.401 - mean_q: -0.467 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.599 - life: 62.652 - is_same_action: 0.709
+
+Interval 5 (40000 steps performed)
+10000/10000 [==============================] - 238s 24ms/step - reward: -0.3404
+7143 episodes - episode_reward: -0.477 [-0.500, 0.333] - loss: 0.008 - mae: 0.403 - mean_q: -0.464 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.603 - life: 62.656 - is_same_action: 0.714
+
+Interval 6 (50000 steps performed)
+10000/10000 [==============================] - 238s 24ms/step - reward: -0.3388
+7113 episodes - episode_reward: -0.476 [-0.500, 0.222] - loss: 0.001 - mae: 0.401 - mean_q: -0.468 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.607 - life: 62.658 - is_same_action: 0.711
+
+Interval 7 (60000 steps performed)
+10000/10000 [==============================] - 237s 24ms/step - reward: -0.3301
+6976 episodes - episode_reward: -0.473 [-0.500, 0.889] - loss: 0.001 - mae: 0.400 - mean_q: -0.466 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.673 - life: 62.614 - is_same_action: 0.698
+
+Interval 8 (70000 steps performed)
+10000/10000 [==============================] - 221s 22ms/step - reward: -0.2751
+6030 episodes - episode_reward: -0.456 [-0.500, 1.583] - loss: 0.002 - mae: 0.398 - mean_q: -0.454 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.950 - life: 62.393 - is_same_action: 0.603
+
+Interval 9 (80000 steps performed)
+10000/10000 [==============================] - 224s 22ms/step - reward: -0.2891
+6267 episodes - episode_reward: -0.461 [-0.500, 0.833] - loss: 24.396 - mae: 0.588 - mean_q: -0.192 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.873 - life: 62.457 - is_same_action: 0.627
+
+Interval 10 (90000 steps performed)
+10000/10000 [==============================] - 235s 23ms/step - reward: -0.3322
+7007 episodes - episode_reward: -0.474 [-0.500, 0.556] - loss: 14416.371 - mae: 8.279 - mean_q: 9.787 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.652 - life: 62.620 - is_same_action: 0.701
+
+Interval 11 (100000 steps performed)
+10000/10000 [==============================] - 234s 23ms/step - reward: -0.3308
+6991 episodes - episode_reward: -0.473 [-0.500, 0.722] - loss: 58818.078 - mae: 10.173 - mean_q: 12.272 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.674 - life: 62.617 - is_same_action: 0.699
+
+Interval 12 (110000 steps performed)
+10000/10000 [==============================] - 235s 23ms/step - reward: -0.3293
+6957 episodes - episode_reward: -0.473 [-0.500, 0.389] - loss: 0.002 - mae: 0.397 - mean_q: -0.451 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.667 - life: 62.621 - is_same_action: 0.696
+
+Interval 13 (120000 steps performed)
+10000/10000 [==============================] - 238s 24ms/step - reward: -0.3416
+7164 episodes - episode_reward: -0.477 [-0.500, 0.306] - loss: 0.001 - mae: 0.399 - mean_q: -0.466 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.598 - life: 62.673 - is_same_action: 0.716
+
+Interval 14 (130000 steps performed)
+10000/10000 [==============================] - 240s 24ms/step - reward: -0.3399
+7130 episodes - episode_reward: -0.477 [-0.500, 0.694] - loss: 0.001 - mae: 0.400 - mean_q: -0.468 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.599 - life: 62.664 - is_same_action: 0.713
+
+Interval 15 (140000 steps performed)
+10000/10000 [==============================] - 243s 24ms/step - reward: -0.3441
+7212 episodes - episode_reward: -0.477 [-0.500, 0.111] - loss: 0.001 - mae: 0.401 - mean_q: -0.469 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.592 - life: 62.677 - is_same_action: 0.721
+
+Interval 16 (150000 steps performed)
+10000/10000 [==============================] - 241s 24ms/step - reward: -0.3419
+7185 episodes - episode_reward: -0.476 [-0.500, 0.306] - loss: 0.001 - mae: 0.401 - mean_q: -0.470 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.625 - life: 62.672 - is_same_action: 0.719
+
+Interval 17 (160000 steps performed)
+10000/10000 [==============================] - 240s 24ms/step - reward: -0.3438
+7211 episodes - episode_reward: -0.477 [-0.500, 0.528] - loss: 0.001 - mae: 0.401 - mean_q: -0.470 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.603 - life: 62.678 - is_same_action: 0.721
+
+Interval 18 (170000 steps performed)
+ 5404/10000 [===============>..............] - ETA: 1:50 - reward: -0.3414done, took 4146.299 seconds
+
+# 打ち切り。報酬設計に不備があったため。changed_squareを36で割っていた。
