@@ -96,3 +96,7 @@
 !pip install keras
 !pip install keras-rl2
 ```
+- reward-=0.01 # 軽微な罰 を追加
+- kerasAPIの仕様でcheckpointが変に作成される==weights_final.h5f.data-00000-of-00001など
+    - https://blog.shikoan.com/tensorflow-save-weights-hdf5/
+        - 修正不可 keras-rlゴミ
