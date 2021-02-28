@@ -7,3 +7,10 @@ cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\gym-floodit
 python  C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\gym-floodit\floodit-DQN.py 
 tensorboard --logdir ../result/DQN                                                                          
 ```
+
+```
+conda activate RL-gpu
+cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\excute file
+python floodit-DQN.py
+
+```
