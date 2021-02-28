@@ -1,0 +1,429 @@
+**************************************************  FloodIt  **************************************************
+action_space      : Discrete(6)
+observation_space : Box(0.0, 5.0, (30, 30), float32)
+reward_range      : (-inf, inf)
+
+**************************************************  Model  **************************************************
+
+Model: "sequential_6"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+flatten_6 (Flatten)          (None, 900)               0         
+_________________________________________________________________
+dense_36 (Dense)             (None, 64)                57664     
+_________________________________________________________________
+activation_36 (Activation)   (None, 64)                0         
+_________________________________________________________________
+dense_37 (Dense)             (None, 128)               8320      
+_________________________________________________________________
+activation_37 (Activation)   (None, 128)               0         
+_________________________________________________________________
+dense_38 (Dense)             (None, 128)               16512     
+_________________________________________________________________
+activation_38 (Activation)   (None, 128)               0         
+_________________________________________________________________
+dense_39 (Dense)             (None, 128)               16512     
+_________________________________________________________________
+activation_39 (Activation)   (None, 128)               0         
+_________________________________________________________________
+dense_40 (Dense)             (None, 64)                8256      
+_________________________________________________________________
+activation_40 (Activation)   (None, 64)                0         
+_________________________________________________________________
+dense_41 (Dense)             (None, 6)                 390       
+_________________________________________________________________
+activation_41 (Activation)   (None, 6)                 0         
+=================================================================
+Total params: 107,654
+Trainable params: 107,654
+Non-trainable params: 0
+_________________________________________________________________
+None
+
+**************************************************  History  **************************************************
+Training for 1000000 steps ...
+Interval 1 (0 steps performed)
+10000/10000 [==============================] - 251s 25ms/step - reward: -0.3506
+7030 episodes - episode_reward: -0.499 [-0.510, 0.780] - loss: 0.003 - mae: 0.416 - mean_q: -0.466 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.652 - life: 62.616 - is_same_action: 0.703
+
+Interval 2 (10000 steps performed)
+10000/10000 [==============================] - 255s 26ms/step - reward: -0.3557
+7120 episodes - episode_reward: -0.500 [-0.510, 0.077] - loss: 0.020 - mae: 0.430 - mean_q: -0.471 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.620 - life: 62.649 - is_same_action: 0.712
+
+Interval 3 (20000 steps performed)
+10000/10000 [==============================] - 261s 26ms/step - reward: -0.3574
+7159 episodes - episode_reward: -0.499 [-0.510, 0.003] - loss: 0.024 - mae: 0.423 - mean_q: -0.480 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.630 - life: 62.651 - is_same_action: 0.716
+
+Interval 4 (30000 steps performed)
+10000/10000 [==============================] - 258s 26ms/step - reward: -0.3530
+7069 episodes - episode_reward: -0.499 [-0.510, -0.077] - loss: 0.278 - mae: 0.450 - mean_q: -0.449 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.628 - life: 62.645 - is_same_action: 0.707
+
+Interval 5 (40000 steps performed)
+10000/10000 [==============================] - 259s 26ms/step - reward: -0.3541
+7092 episodes - episode_reward: -0.499 [-0.510, 0.100] - loss: 0.000 - mae: 0.417 - mean_q: -0.491 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.630 - life: 62.649 - is_same_action: 0.709
+
+Interval 6 (50000 steps performed)
+10000/10000 [==============================] - 259s 26ms/step - reward: -0.3559
+7123 episodes - episode_reward: -0.500 [-0.510, 0.173] - loss: 0.000 - mae: 0.417 - mean_q: -0.492 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.615 - life: 62.648 - is_same_action: 0.712
+
+Interval 7 (60000 steps performed)
+10000/10000 [==============================] - 258s 26ms/step - reward: -0.3555
+7115 episodes - episode_reward: -0.500 [-0.510, -0.073] - loss: 0.000 - mae: 0.417 - mean_q: -0.492 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.617 - life: 62.647 - is_same_action: 0.712
+
+Interval 8 (70000 steps performed)
+10000/10000 [==============================] - 259s 26ms/step - reward: -0.3536
+7085 episodes - episode_reward: -0.499 [-0.510, 0.087] - loss: 0.000 - mae: 0.417 - mean_q: -0.492 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.637 - life: 62.649 - is_same_action: 0.709
+
+Interval 9 (80000 steps performed)
+10000/10000 [==============================] - 259s 26ms/step - reward: -0.3556
+7116 episodes - episode_reward: -0.500 [-0.510, -0.087] - loss: 0.005 - mae: 0.417 - mean_q: -0.492 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.609 - life: 62.655 - is_same_action: 0.712
+
+Interval 10 (90000 steps performed)
+10000/10000 [==============================] - 260s 26ms/step - reward: -0.3585
+7167 episodes - episode_reward: -0.500 [-0.510, 0.080] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.594 - life: 62.664 - is_same_action: 0.717
+
+Interval 11 (100000 steps performed)
+10000/10000 [==============================] - 262s 26ms/step - reward: -0.3607
+7209 episodes - episode_reward: -0.500 [-0.510, -0.170] - loss: 0.000 - mae: 0.418 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.587 - life: 62.674 - is_same_action: 0.721
+
+Interval 12 (110000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3591
+7183 episodes - episode_reward: -0.500 [-0.510, 0.057] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.604 - life: 62.658 - is_same_action: 0.718
+
+Interval 13 (120000 steps performed)
+10000/10000 [==============================] - 262s 26ms/step - reward: -0.3579
+7159 episodes - episode_reward: -0.500 [-0.510, -0.070] - loss: 0.002 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.605 - life: 62.657 - is_same_action: 0.716
+
+Interval 14 (130000 steps performed)
+10000/10000 [==============================] - 261s 26ms/step - reward: -0.3587
+7174 episodes - episode_reward: -0.500 [-0.510, -0.200] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.599 - life: 62.666 - is_same_action: 0.717
+
+Interval 15 (140000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3576
+7154 episodes - episode_reward: -0.500 [-0.510, 0.033] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.607 - life: 62.659 - is_same_action: 0.715
+
+Interval 16 (150000 steps performed)
+10000/10000 [==============================] - 262s 26ms/step - reward: -0.3571
+7148 episodes - episode_reward: -0.500 [-0.510, 0.493] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.618 - life: 62.659 - is_same_action: 0.715
+
+Interval 17 (160000 steps performed)
+10000/10000 [==============================] - 261s 26ms/step - reward: -0.3571
+7147 episodes - episode_reward: -0.500 [-0.510, -0.017] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.613 - life: 62.655 - is_same_action: 0.715
+
+Interval 18 (170000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3538
+7089 episodes - episode_reward: -0.499 [-0.510, 0.040] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.637 - life: 62.652 - is_same_action: 0.709
+
+Interval 19 (180000 steps performed)
+10000/10000 [==============================] - 263s 26ms/step - reward: -0.3547
+7099 episodes - episode_reward: -0.500 [-0.510, 0.027] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.615 - life: 62.651 - is_same_action: 0.710
+
+Interval 20 (190000 steps performed)
+10000/10000 [==============================] - 327s 33ms/step - reward: -0.3540
+7083 episodes - episode_reward: -0.500 [-0.510, -0.010] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.611 - life: 62.653 - is_same_action: 0.708
+
+Interval 21 (200000 steps performed)
+10000/10000 [==============================] - 260s 26ms/step - reward: -0.3583
+7163 episodes - episode_reward: -0.500 [-0.510, -0.040] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.593 - life: 62.666 - is_same_action: 0.716
+
+Interval 22 (210000 steps performed)
+10000/10000 [==============================] - 261s 26ms/step - reward: -0.3556
+7117 episodes - episode_reward: -0.500 [-0.510, 0.297] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.613 - life: 62.657 - is_same_action: 0.712
+
+Interval 23 (220000 steps performed)
+10000/10000 [==============================] - 263s 26ms/step - reward: -0.3576
+7153 episodes - episode_reward: -0.500 [-0.510, 0.083] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.606 - life: 62.660 - is_same_action: 0.715
+
+Interval 24 (230000 steps performed)
+10000/10000 [==============================] - 262s 26ms/step - reward: -0.3593
+7182 episodes - episode_reward: -0.500 [-0.510, -0.170] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.587 - life: 62.669 - is_same_action: 0.718
+
+Interval 25 (240000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3568
+7141 episodes - episode_reward: -0.500 [-0.510, 0.050] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.617 - life: 62.664 - is_same_action: 0.714
+
+Interval 26 (250000 steps performed)
+10000/10000 [==============================] - 265s 27ms/step - reward: -0.3555
+7116 episodes - episode_reward: -0.500 [-0.510, 0.183] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.621 - life: 62.657 - is_same_action: 0.712
+
+Interval 27 (260000 steps performed)
+10000/10000 [==============================] - 265s 26ms/step - reward: -0.3591
+7180 episodes - episode_reward: -0.500 [-0.510, -0.097] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.594 - life: 62.668 - is_same_action: 0.718
+
+Interval 28 (270000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3597
+7195 episodes - episode_reward: -0.500 [-0.510, -0.070] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.603 - life: 62.666 - is_same_action: 0.720
+
+Interval 29 (280000 steps performed)
+10000/10000 [==============================] - 263s 26ms/step - reward: -0.3536
+7080 episodes - episode_reward: -0.499 [-0.510, -0.027] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.625 - life: 62.648 - is_same_action: 0.708
+
+Interval 30 (290000 steps performed)
+10000/10000 [==============================] - 265s 26ms/step - reward: -0.3571
+7148 episodes - episode_reward: -0.500 [-0.510, -0.047] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.620 - life: 62.661 - is_same_action: 0.715
+
+Interval 31 (300000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3575
+7155 episodes - episode_reward: -0.500 [-0.510, 0.137] - loss: 0.000 - mae: 0.417 - mean_q: -0.493 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.618 - life: 62.658 - is_same_action: 0.716
+
+Interval 32 (310000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3565
+7137 episodes - episode_reward: -0.500 [-0.510, 0.083] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.618 - life: 62.662 - is_same_action: 0.714
+
+Interval 33 (320000 steps performed)
+10000/10000 [==============================] - 266s 27ms/step - reward: -0.3599
+7197 episodes - episode_reward: -0.500 [-0.510, -0.073] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.596 - life: 62.665 - is_same_action: 0.720
+
+Interval 34 (330000 steps performed)
+10000/10000 [==============================] - 262s 26ms/step - reward: -0.3538
+7080 episodes - episode_reward: -0.500 [-0.510, -0.130] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.614 - life: 62.653 - is_same_action: 0.708
+
+Interval 35 (340000 steps performed)
+10000/10000 [==============================] - 263s 26ms/step - reward: -0.3593
+7187 episodes - episode_reward: -0.500 [-0.510, -0.130] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.604 - life: 62.672 - is_same_action: 0.719
+
+Interval 36 (350000 steps performed)
+10000/10000 [==============================] - 265s 26ms/step - reward: -0.3592
+7181 episodes - episode_reward: -0.500 [-0.510, 0.117] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.592 - life: 62.666 - is_same_action: 0.718
+
+Interval 37 (360000 steps performed)
+10000/10000 [==============================] - 265s 26ms/step - reward: -0.3581
+7162 episodes - episode_reward: -0.500 [-0.510, 0.050] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.600 - life: 62.670 - is_same_action: 0.716
+
+Interval 38 (370000 steps performed)
+10000/10000 [==============================] - 264s 26ms/step - reward: -0.3574
+7153 episodes - episode_reward: -0.500 [-0.510, 0.027] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.616 - life: 62.663 - is_same_action: 0.715
+
+Interval 39 (380000 steps performed)
+10000/10000 [==============================] - 265s 26ms/step - reward: -0.3575
+7146 episodes - episode_reward: -0.500 [-0.510, -0.103] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.590 - life: 62.663 - is_same_action: 0.715
+
+Interval 40 (390000 steps performed)
+10000/10000 [==============================] - 268s 27ms/step - reward: -0.3583
+7171 episodes - episode_reward: -0.500 [-0.510, 0.453] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.617 - life: 62.661 - is_same_action: 0.717
+
+Interval 41 (400000 steps performed)
+10000/10000 [==============================] - 267s 27ms/step - reward: -0.3580
+7163 episodes - episode_reward: -0.500 [-0.510, -0.183] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.608 - life: 62.664 - is_same_action: 0.716
+
+Interval 42 (410000 steps performed)
+10000/10000 [==============================] - 272s 27ms/step - reward: -0.3555
+7111 episodes - episode_reward: -0.500 [-0.510, -0.147] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.602 - life: 62.658 - is_same_action: 0.711
+
+Interval 43 (420000 steps performed)
+10000/10000 [==============================] - 267s 27ms/step - reward: -0.3557
+7120 episodes - episode_reward: -0.500 [-0.510, -0.040] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.619 - life: 62.661 - is_same_action: 0.712
+
+Interval 44 (430000 steps performed)
+10000/10000 [==============================] - 268s 27ms/step - reward: -0.3600
+7196 episodes - episode_reward: -0.500 [-0.510, 0.027] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.590 - life: 62.668 - is_same_action: 0.720
+
+Interval 45 (440000 steps performed)
+10000/10000 [==============================] - 266s 27ms/step - reward: -0.3585
+7176 episodes - episode_reward: -0.499 [-0.510, -0.017] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.621 - life: 62.664 - is_same_action: 0.718
+
+Interval 46 (450000 steps performed)
+10000/10000 [==============================] - 273s 27ms/step - reward: -0.3554
+7119 episodes - episode_reward: -0.499 [-0.510, 0.007] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.635 - life: 62.654 - is_same_action: 0.712
+
+Interval 47 (460000 steps performed)
+10000/10000 [==============================] - 293s 29ms/step - reward: -0.3580
+7163 episodes - episode_reward: -0.500 [-0.510, 0.083] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.608 - life: 62.669 - is_same_action: 0.716
+
+Interval 48 (470000 steps performed)
+10000/10000 [==============================] - 290s 29ms/step - reward: -0.3584
+7166 episodes - episode_reward: -0.500 [-0.510, -0.060] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.593 - life: 62.669 - is_same_action: 0.717
+
+Interval 49 (480000 steps performed)
+10000/10000 [==============================] - 293s 29ms/step - reward: -0.3612
+7223 episodes - episode_reward: -0.500 [-0.510, -0.087] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.595 - life: 62.668 - is_same_action: 0.722
+
+Interval 50 (490000 steps performed)
+10000/10000 [==============================] - 288s 29ms/step - reward: -0.3563
+7129 episodes - episode_reward: -0.500 [-0.510, -0.067] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.610 - life: 62.658 - is_same_action: 0.713
+
+Interval 51 (500000 steps performed)
+10000/10000 [==============================] - 293s 29ms/step - reward: -0.3560
+7123 episodes - episode_reward: -0.500 [-0.510, -0.120] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.607 - life: 62.657 - is_same_action: 0.712
+
+Interval 52 (510000 steps performed)
+10000/10000 [==============================] - 284s 28ms/step - reward: -0.3597
+7195 episodes - episode_reward: -0.500 [-0.510, -0.043] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.601 - life: 62.668 - is_same_action: 0.720
+
+Interval 53 (520000 steps performed)
+10000/10000 [==============================] - 286s 29ms/step - reward: -0.3564
+7135 episodes - episode_reward: -0.500 [-0.510, -0.023] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.619 - life: 62.659 - is_same_action: 0.714
+
+Interval 54 (530000 steps performed)
+10000/10000 [==============================] - 284s 28ms/step - reward: -0.3613
+7220 episodes - episode_reward: -0.500 [-0.510, 0.000] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.579 - life: 62.674 - is_same_action: 0.722
+
+Interval 55 (540000 steps performed)
+10000/10000 [==============================] - 292s 29ms/step - reward: -0.3588
+7174 episodes - episode_reward: -0.500 [-0.510, -0.157] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.596 - life: 62.669 - is_same_action: 0.717
+
+Interval 56 (550000 steps performed)
+10000/10000 [==============================] - 285s 28ms/step - reward: -0.3596
+7185 episodes - episode_reward: -0.500 [-0.510, 0.017] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.579 - life: 62.671 - is_same_action: 0.719
+
+Interval 57 (560000 steps performed)
+10000/10000 [==============================] - 288s 29ms/step - reward: -0.3567
+7139 episodes - episode_reward: -0.500 [-0.510, 0.173] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.617 - life: 62.650 - is_same_action: 0.714
+
+Interval 58 (570000 steps performed)
+10000/10000 [==============================] - 295s 30ms/step - reward: -0.3574
+7152 episodes - episode_reward: -0.500 [-0.510, 0.197] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.615 - life: 62.665 - is_same_action: 0.715
+
+Interval 59 (580000 steps performed)
+10000/10000 [==============================] - 295s 29ms/step - reward: -0.3570
+7146 episodes - episode_reward: -0.500 [-0.510, 0.077] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.619 - life: 62.667 - is_same_action: 0.715
+
+Interval 60 (590000 steps performed)
+10000/10000 [==============================] - 291s 29ms/step - reward: -0.3561
+7124 episodes - episode_reward: -0.500 [-0.510, -0.093] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.609 - life: 62.659 - is_same_action: 0.712
+
+Interval 61 (600000 steps performed)
+10000/10000 [==============================] - 297s 30ms/step - reward: -0.3608
+7213 episodes - episode_reward: -0.500 [-0.510, -0.173] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.592 - life: 62.675 - is_same_action: 0.721
+
+Interval 62 (610000 steps performed)
+10000/10000 [==============================] - 291s 29ms/step - reward: -0.3584
+7171 episodes - episode_reward: -0.500 [-0.510, -0.010] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.608 - life: 62.666 - is_same_action: 0.717
+
+Interval 63 (620000 steps performed)
+10000/10000 [==============================] - 289s 29ms/step - reward: -0.3598
+7194 episodes - episode_reward: -0.500 [-0.510, -0.033] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.595 - life: 62.670 - is_same_action: 0.719
+
+Interval 64 (630000 steps performed)
+10000/10000 [==============================] - 284s 28ms/step - reward: -0.3583
+7168 episodes - episode_reward: -0.500 [-0.510, 0.180] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.609 - life: 62.660 - is_same_action: 0.717
+
+Interval 65 (640000 steps performed)
+10000/10000 [==============================] - 287s 29ms/step - reward: -0.3598
+7195 episodes - episode_reward: -0.500 [-0.510, 0.307] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.594 - life: 62.672 - is_same_action: 0.720
+
+Interval 66 (650000 steps performed)
+10000/10000 [==============================] - 289s 29ms/step - reward: -0.3576
+7157 episodes - episode_reward: -0.500 [-0.510, 0.083] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.613 - life: 62.669 - is_same_action: 0.716
+
+Interval 67 (660000 steps performed)
+10000/10000 [==============================] - 290s 29ms/step - reward: -0.3580
+7163 episodes - episode_reward: -0.500 [-0.510, -0.060] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.606 - life: 62.661 - is_same_action: 0.716
+
+Interval 68 (670000 steps performed)
+10000/10000 [==============================] - 293s 29ms/step - reward: -0.3596
+7190 episodes - episode_reward: -0.500 [-0.510, -0.117] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.596 - life: 62.670 - is_same_action: 0.719
+
+Interval 69 (680000 steps performed)
+10000/10000 [==============================] - 293s 29ms/step - reward: -0.3578
+7154 episodes - episode_reward: -0.500 [-0.510, -0.097] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.593 - life: 62.662 - is_same_action: 0.715
+
+Interval 70 (690000 steps performed)
+10000/10000 [==============================] - 291s 29ms/step - reward: -0.3597
+7192 episodes - episode_reward: -0.500 [-0.510, -0.143] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.591 - life: 62.666 - is_same_action: 0.719
+
+Interval 71 (700000 steps performed)
+10000/10000 [==============================] - 291s 29ms/step - reward: -0.3581
+7161 episodes - episode_reward: -0.500 [-0.510, 0.080] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.599 - life: 62.664 - is_same_action: 0.716
+
+Interval 72 (710000 steps performed)
+10000/10000 [==============================] - 289s 29ms/step - reward: -0.3569
+7140 episodes - episode_reward: -0.500 [-0.510, -0.157] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.606 - life: 62.660 - is_same_action: 0.714
+
+Interval 73 (720000 steps performed)
+10000/10000 [==============================] - 293s 29ms/step - reward: -0.3543
+7093 episodes - episode_reward: -0.499 [-0.510, 0.153] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.622 - life: 62.648 - is_same_action: 0.709
+
+Interval 74 (730000 steps performed)
+10000/10000 [==============================] - 279s 28ms/step - reward: -0.3566
+7135 episodes - episode_reward: -0.500 [-0.510, 0.040] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.611 - life: 62.659 - is_same_action: 0.714
+
+Interval 75 (740000 steps performed)
+10000/10000 [==============================] - 265s 26ms/step - reward: -0.3574
+7154 episodes - episode_reward: -0.500 [-0.510, 0.213] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.621 - life: 62.664 - is_same_action: 0.715
+
+Interval 76 (750000 steps performed)
+10000/10000 [==============================] - 275s 27ms/step - reward: -0.3637
+7265 episodes - episode_reward: -0.501 [-0.510, -0.060] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.571 - life: 62.678 - is_same_action: 0.727
+
+Interval 77 (760000 steps performed)
+10000/10000 [==============================] - 272s 27ms/step - reward: -0.3574
+7154 episodes - episode_reward: -0.500 [-0.510, 0.040] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.618 - life: 62.664 - is_same_action: 0.715
+
+Interval 78 (770000 steps performed)
+10000/10000 [==============================] - 269s 27ms/step - reward: -0.3611
+7226 episodes - episode_reward: -0.500 [-0.510, -0.010] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.609 - life: 62.673 - is_same_action: 0.723
+
+Interval 79 (780000 steps performed)
+10000/10000 [==============================] - 267s 27ms/step - reward: -0.3582
+7165 episodes - episode_reward: -0.500 [-0.510, 0.137] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.602 - life: 62.658 - is_same_action: 0.717
+
+Interval 80 (790000 steps performed)
+10000/10000 [==============================] - 273s 27ms/step - reward: -0.3584
+7168 episodes - episode_reward: -0.500 [-0.510, 0.043] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.603 - life: 62.666 - is_same_action: 0.717
+
+Interval 81 (800000 steps performed)
+10000/10000 [==============================] - 270s 27ms/step - reward: -0.3600
+7198 episodes - episode_reward: -0.500 [-0.510, 0.000] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.592 - life: 62.676 - is_same_action: 0.720
+
+Interval 82 (810000 steps performed)
+10000/10000 [==============================] - 269s 27ms/step - reward: -0.3563
+7129 episodes - episode_reward: -0.500 [-0.510, 0.043] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.610 - life: 62.659 - is_same_action: 0.713
+
+Interval 83 (820000 steps performed)
+10000/10000 [==============================] - 273s 27ms/step - reward: -0.3571
+7144 episodes - episode_reward: -0.500 [-0.510, -0.057] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.604 - life: 62.666 - is_same_action: 0.714
+
+Interval 84 (830000 steps performed)
+10000/10000 [==============================] - 272s 27ms/step - reward: -0.3580
+7164 episodes - episode_reward: -0.500 [-0.510, 0.017] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.614 - life: 62.663 - is_same_action: 0.716
+
+Interval 85 (840000 steps performed)
+10000/10000 [==============================] - 272s 27ms/step - reward: -0.3588
+7178 episodes - episode_reward: -0.500 [-0.510, -0.073] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.603 - life: 62.670 - is_same_action: 0.718
+
+Interval 86 (850000 steps performed)
+10000/10000 [==============================] - 274s 27ms/step - reward: -0.3585
+7170 episodes - episode_reward: -0.500 [-0.510, -0.043] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.597 - life: 62.668 - is_same_action: 0.717
+
+Interval 87 (860000 steps performed)
+10000/10000 [==============================] - 270s 27ms/step - reward: -0.3555
+7114 episodes - episode_reward: -0.500 [-0.510, 0.000] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.613 - life: 62.655 - is_same_action: 0.711
+
+Interval 88 (870000 steps performed)
+10000/10000 [==============================] - 268s 27ms/step - reward: -0.3613
+7216 episodes - episode_reward: -0.501 [-0.510, -0.080] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.571 - life: 62.671 - is_same_action: 0.722
+
+Interval 89 (880000 steps performed)
+10000/10000 [==============================] - 267s 27ms/step - reward: -0.3575
+7152 episodes - episode_reward: -0.500 [-0.510, 0.457] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.608 - life: 62.663 - is_same_action: 0.715
+
+Interval 90 (890000 steps performed)
+10000/10000 [==============================] - 268s 27ms/step - reward: -0.3585
+7172 episodes - episode_reward: -0.500 [-0.510, -0.087] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.604 - life: 62.671 - is_same_action: 0.717
+
+Interval 91 (900000 steps performed)
+10000/10000 [==============================] - 266s 27ms/step - reward: -0.3526
+7064 episodes - episode_reward: -0.499 [-0.510, -0.090] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.635 - life: 62.644 - is_same_action: 0.706
+
+Interval 92 (910000 steps performed)
+10000/10000 [==============================] - 267s 27ms/step - reward: -0.3583
+7169 episodes - episode_reward: -0.500 [-0.510, -0.020] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.607 - life: 62.658 - is_same_action: 0.717
+
+Interval 93 (920000 steps performed)
+10000/10000 [==============================] - 266s 27ms/step - reward: -0.3534
+7074 episodes - episode_reward: -0.500 [-0.510, 0.047] - loss: 0.000 - mae: 0.417 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.616 - life: 62.645 - is_same_action: 0.707
+
+Interval 94 (930000 steps performed)
+10000/10000 [==============================] - 271s 27ms/step - reward: -0.3648
+7280 episodes - episode_reward: -0.501 [-0.510, 0.010] - loss: 0.000 - mae: 0.418 - mean_q: -0.494 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.554 - life: 62.679 - is_same_action: 0.728
+
+Interval 95 (940000 steps performed)
+10000/10000 [==============================] - 267s 27ms/step - reward: -0.3568
+7144 episodes - episode_reward: -0.499 [-0.510, 0.060] - loss: 0.000 - mae: 0.418 - mean_q: -0.495 - isWon: 0.000 - isLose: 0.000 - changed_square: 0.626 - life: 62.663 - is_same_action: 0.714
+
+Interval 96 (950000 steps performed)
+ 6898/10000 [===================>..........] - ETA: 1:23 - reward: -0.3590
+ 
+ 12hours limit
