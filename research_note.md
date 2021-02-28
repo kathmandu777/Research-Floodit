@@ -103,3 +103,14 @@
 - Optunaによるハイパーパラメータの最適化
     - https://qiita.com/pocokhc/items/8ed40be84a144b28180d
     - https://qiita.com/ryota717/items/28e2167ea69bee7e250d
+- colab で1,000,000ステップ実行
+    - 全く成長していなかった
+
+### 2021/02/28
+- GPU環境の構築
+    - https://keita-blog.com/data_science/keras-tensorflow-gpu
+    - https://qiita.com/nemutas/items/c7d9cca91a7e1bd404b6
+    - https://keita-blog.com/data_science/keras-tensorflow-gpu
+    - https://qiita.com/jonpili/items/e5444c31fbd16f30725a
+    - https://qiita.com/pocokhc/items/- 08d3fb3ef0b6fa427528#tensorflow-gpu%E7%89%88-%E3%82%92%E4%BD%BF%E3%81%86%E3%81%9F%E3%82%81%E3%81%AE%E6%BA%96%E5%82%99
+    - https://qiita.com/chin_self_driving_car/items/f00af2dbd022b65c9068
