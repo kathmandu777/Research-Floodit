@@ -100,3 +100,6 @@
 - kerasAPIの仕様でcheckpointが変に作成される==weights_final.h5f.data-00000-of-00001など
     - https://blog.shikoan.com/tensorflow-save-weights-hdf5/
         - 修正不可 keras-rlゴミ
+- Optunaによるハイパーパラメータの最適化
+    - https://qiita.com/pocokhc/items/8ed40be84a144b28180d
+    - https://qiita.com/ryota717/items/28e2167ea69bee7e250d
