@@ -116,3 +116,6 @@
     - https://qiita.com/chin_self_driving_car/items/f00af2dbd022b65c9068
 - CNN-new-rewardうまくいかず
 - フォルダ構成
+- GPU NVIDIA関連
+    - [cuDNN](https://developer.nvidia.com/rdp/cudnn-archive)
+    - [CUDA](https://developer.nvidia.com/cuda-toolkit-archive)
