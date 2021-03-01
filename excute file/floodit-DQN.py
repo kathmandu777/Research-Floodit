@@ -29,7 +29,7 @@ sys.path.pop()
 # HIGH:H or MEDIUM:M or EASY:E
 level = "H"  # ?適宜変更
 
-env = gym.make("floodit-v0", level=level)  # gameの初期化（インスタンス作成）
+env = gym.make("floodit-v0", level=level)  # envの初期化（インスタンス作成）
 print("\n\n")
 print("*" * 50 + "  FloodIt  " + "*" * 50)
 print("action_space      : " + str(env.action_space))
