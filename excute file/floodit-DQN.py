@@ -3,9 +3,9 @@
 
 import matplotlib.pyplot as plt
 import rl.callbacks
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Activation, Flatten
-from tensorflow.python.keras.optimizers import Adam
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation, Flatten
+from tensorflow.keras.optimizers import Adam
 import tensorflow as tf
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
