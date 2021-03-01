@@ -17,3 +17,4 @@ python floodit-DQN.py
 
 ## model
 (全矢印-1)/2=層 と定義
+activationが単体で書かれていない時: 全矢印-Input-Reshape
