@@ -3,10 +3,10 @@
 import matplotlib.pyplot as plt
 import rl.callbacks
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation, Flatten
+from tensorflow.keras.layers import *
 from tensorflow.keras.optimizers import Adam
 import tensorflow as tf
-from rl.agents.dqn import DQNAgent
+from rl.agents.dqn import *
 from rl.policy import EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 import sys
@@ -39,10 +39,10 @@ print()
 
 
 #!各データ保存用フォルダの作成
-summary = "about_what_you_make"  # ?毎回変更
+summary = "CNN-7"  # ?毎回変更
 
 result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
-result_folder_path += "/DQN"  # ?適宜変更
+result_folder_path += "/DDQN"  # ?適宜変更
 
 file_and_folder = os.listdir(result_folder_path)
 dir_list = [f for f in file_and_folder if os.path.isdir(
@@ -62,19 +62,15 @@ os.chmod(folder_path + "/for_record.py",
 
 #!モデルの定義
 model = Sequential()
-model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dense(128))
-model.add(Activation('relu'))
-model.add(Dense(128))
-model.add(Activation('relu'))
-model.add(Dense(128))
-model.add(Activation('relu'))
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dense(env.action_space.n))
-model.add(Activation('linear'))
+model.add(Reshape(env.observation_space.shape + (1,),
+                  input_shape=(1,) + env.observation_space.shape))
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(env.action_space.n, activation='linear'))
 
 print("\n\n")
 print("*" * 50 + "  Model  " + "*" * 50)
@@ -88,7 +84,7 @@ memory = SequentialMemory(limit=50000, window_length=1,
                           ignore_episode_boundaries=True)
 policy = EpsGreedyQPolicy(eps=0.1)
 dqn = DQNAgent(model=model, nb_actions=env.action_space.n, memory=memory, nb_steps_warmup=100,
-               target_model_update=1e-2, policy=policy)
+               target_model_update=1e-2, policy=policy, enable_double_dqn=True)
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 
@@ -114,7 +110,7 @@ logdir = folder_path
 
 
 callbacks = [ModelIntervalCheckpoint(
-    checkpoint_weights_filename, interval=100000)]  # モデルを保存する頻度
+    checkpoint_weights_filename, interval=100000)]  # ?モデルを保存する頻度
 
 callbacks += [tf.keras.callbacks.TensorBoard(log_dir=logdir)]
 history = dqn.fit(env, callbacks=callbacks, nb_steps=MAX_STEPS, visualize=False,
