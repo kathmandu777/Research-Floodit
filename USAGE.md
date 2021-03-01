@@ -13,6 +13,9 @@ conda activate RL-gpu
 cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\excute file
 python floodit-DQN.py
 
+cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\result
+tensorboard --logdir DDQN or DQN
+
 ```
 
 ## model
