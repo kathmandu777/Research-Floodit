@@ -15,7 +15,7 @@ model.add(Dense(env.action_space.n, activation='linear'))
 ```
 
 ## 結果
-- 学習中
+- だめ
 
 ## 備考
 - 
