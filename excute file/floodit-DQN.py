@@ -1,10 +1,11 @@
 # DQNを用いてFloodit1を攻略
 
+
 import matplotlib.pyplot as plt
 import rl.callbacks
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
-from keras.optimizers import Adam
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense, Activation, Flatten
+from tensorflow.python.keras.optimizers import Adam
 import tensorflow as tf
 from rl.agents.dqn import DQNAgent
 from rl.policy import EpsGreedyQPolicy
@@ -12,11 +13,17 @@ from rl.memory import SequentialMemory
 import sys
 import datetime
 import gym
-import gym_floodit
 import numpy as np
 from tensorflow.python.keras.utils.vis_utils import plot_model
 import os
 from rl.callbacks import FileLogger, ModelIntervalCheckpoint
+import re
+import shutil
+
+sys.path.append("../gym-floodit")
+import gym_floodit  # nopep
+sys.path.pop()
+
 
 """
 パラメータ:
@@ -29,16 +36,38 @@ logをとる頻度
 学習回数に応じてグラフの描画の分割度(2箇所)
 
 """
-env = gym.make("floodit-v0")  # gameの初期化（インスタンス作成）
-nb_actions = env.action_space.n
-now_time = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-os.makedirs("../result/DQN/"+now_time)
-os.makedirs("../result/DQN/"+now_time+"/checkpoints")
 
-# DQNのネットワーク定義
+
+#!FloodItの初期化
+env = gym.make("floodit-v0")  # gameの初期化（インスタンス作成）
+print("*"*50+"  FloodIt  "+"*"*50)
+print("action_space      : " + str(env.action_space))
+print("observation_space : " + str(env.observation_space))
+print("reward_range      : " + str(env.reward_range))
+print()
+
+
+#!各データ保存用フォルダの作成
+summary = "about_what_you_make"  # ?毎回変更
+
+result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
+result_folder_path += "/DQN"  # ?適宜変更
+
+file_and_folder = os.listdir(result_folder_path)
+dir_list = [f for f in file_and_folder if os.path.isdir(
+    os.path.join(result_folder_path, f))]
+last_num = int(re.findall('^[0-9]+', dir_list[-1])[0])  # 先頭の数字のみ抽出
+next_num = str(last_num+1).zfill(3)
+folder_name = next_num + "-" + summary
+folder_path = os.path.join(result_folder_path, folder_name)
+os.makedirs(folder_path)
+os.makedirs(os.path.join(folder_path, "checkpoints"))
+
+shutil.copyfile(os.path.abspath(__file__),folder_path+"/for_record.py") # 実行したファイルのコピーを作成
+
+#!モデルの定義
 model = Sequential()
 model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-# 一次元化したとすると6*6=36
 model.add(Dense(64))
 model.add(Activation('relu'))
 model.add(Dense(128))
@@ -49,50 +78,43 @@ model.add(Dense(128))
 model.add(Activation('relu'))
 model.add(Dense(64))
 model.add(Activation('relu'))
-model.add(Dense(nb_actions))
+model.add(Dense(env.action_space.n))
 model.add(Activation('linear'))
 
-print()
 print("*"*50+"  Model  "+"*"*50)
 print()
 print(model.summary())
-plot_model(model, to_file="../result/DQN/"+str(now_time) +
-           "/DQN_model.png", show_shapes=True)
+plot_model(model, to_file=folder_path+"/model.png", show_shapes=True)
 
 
 # DQN agentの定義
 memory = SequentialMemory(limit=50000, window_length=1,
                           ignore_episode_boundaries=True)
 policy = EpsGreedyQPolicy(eps=0.1)
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+dqn = DQNAgent(model=model, nb_actions=env.action_space.n, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=policy)
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 
 # 学習
-print()
 print("*" * 50 + "  History  " + "*" * 50)
+print()
 
 MAX_STEPS = 1000000  # 学習ステップ回数
 
-checkpoint_weights_filename = "../result/DQN/" + \
-    str(now_time) + "/checkpoints/weights_{step}steps.h5f"
-#log_filename = "../result/DQN/" + str(now_time) + '/log.json'
-logdir = "..\\result\\DQN\\" + str(now_time)
+checkpoint_weights_filename = folder_path+"/checkpoints/weights_{step}steps.h5f"
+logdir = folder_path
 
 # モデルを保存する頻度
 callbacks = [ModelIntervalCheckpoint(
     checkpoint_weights_filename, interval=100000)]
-# logをとる頻度(なし?)
 callbacks += [tf.keras.callbacks.TensorBoard(log_dir=logdir)]
-
 history = dqn.fit(env, callbacks=callbacks, nb_steps=MAX_STEPS, visualize=False,
                   verbose=1)
 
 
 # 重みの保存
-dqn.save_weights("../result/DQN/"+str(now_time) +
-                 "/weights_final.h5f", overwrite=False)
+dqn.save_weights(folder_path+"/weights_final.h5f", overwrite=False)
 
 
 # グラフを表示
@@ -119,12 +141,11 @@ plt.plot(x, y)
 plt.ylabel("reward")
 
 plt.xlabel("episode")
-plt.savefig("../result/DQN/" + now_time + str("/step-reward_plt.jpg"))
+plt.savefig(folder_path+"/step-reward_plt.jpg")
 plt.show()
 
 
 # 学習結果のテスト
-print()
 print("*"*50+"  Test  "+"*"*50)
 print()
 dqn.test(env, nb_episodes=10, visualize=True)
