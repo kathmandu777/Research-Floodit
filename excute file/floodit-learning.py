@@ -27,7 +27,7 @@ sys.path.pop()
 
 #!FloodItの初期化
 # HIGH:H or MEDIUM:M or EASY:E
-level = "H"  # ?適宜変更
+level = "E"  # ?適宜変更
 
 env = gym.make("floodit-v0", level=level)  # envの初期化（インスタンス作成）
 print("\n\n")
@@ -47,9 +47,12 @@ result_folder_path += "/DDQN"  # ?適宜変更
 file_and_folder = os.listdir(result_folder_path)
 dir_list = [f for f in file_and_folder if os.path.isdir(
     os.path.join(result_folder_path, f))]
-last_num = int(re.findall('^[0-9]+', dir_list[-1])[0])  # 先頭の数字のみ抽出
+if (len(dir_list) == 0):
+    last_num = 0
+else:
+    last_num = int(re.findall('^[0-9]+', dir_list[-1])[0])  # 先頭の数字のみ抽出
 next_num = str(last_num + 1).zfill(3)
-folder_name = next_num + "-" + summary + "_" + level + "_L"
+folder_name = next_num + "_" + summary + "_" + level + "_L"
 folder_path = os.path.join(result_folder_path, folder_name)
 os.makedirs(folder_path)
 os.makedirs(os.path.join(folder_path, "checkpoints"))
@@ -79,7 +82,7 @@ print(model.summary())
 plot_model(model, to_file=folder_path + "/model.png", show_shapes=True)
 
 
-# !DQN agentの定義
+# !Agentの定義
 memory = SequentialMemory(limit=50000, window_length=1,
                           ignore_episode_boundaries=True)
 policy = EpsGreedyQPolicy(eps=0.1)
