@@ -14,3 +14,6 @@ cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\excute file
 python floodit-DQN.py
 
 ```
+
+## model
+(全矢印-1)/2=層 と定義
