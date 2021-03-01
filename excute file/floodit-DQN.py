@@ -1,5 +1,4 @@
-# DQNを用いてFloodit1を攻略
-
+# DQNを用いてFlood-Itを攻略
 
 import matplotlib.pyplot as plt
 import rl.callbacks
@@ -19,28 +18,20 @@ import os
 from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 import re
 import shutil
+from stat import SF_IMMUTABLE
 
 sys.path.append("../gym-floodit")
 import gym_floodit  # nopep
 sys.path.pop()
 
 
-"""
-パラメータ:
-
-ネットワーク(モデル)定義
-DQN agentの定義
-学習ステップ回数
-モデルを保存する頻度
-logをとる頻度
-学習回数に応じてグラフの描画の分割度(2箇所)
-
-"""
-
-
 #!FloodItの初期化
-env = gym.make("floodit-v0")  # gameの初期化（インスタンス作成）
-print("*"*50+"  FloodIt  "+"*"*50)
+# HIGH:H or MEDIUM:M or EASY:E
+level = "H"  # ?適宜変更
+
+env = gym.make("floodit-v0", level=level)  # gameの初期化（インスタンス作成）
+print("\n\n")
+print("*" * 50 + "  FloodIt  " + "*" * 50)
 print("action_space      : " + str(env.action_space))
 print("observation_space : " + str(env.observation_space))
 print("reward_range      : " + str(env.reward_range))
@@ -57,13 +48,17 @@ file_and_folder = os.listdir(result_folder_path)
 dir_list = [f for f in file_and_folder if os.path.isdir(
     os.path.join(result_folder_path, f))]
 last_num = int(re.findall('^[0-9]+', dir_list[-1])[0])  # 先頭の数字のみ抽出
-next_num = str(last_num+1).zfill(3)
-folder_name = next_num + "-" + summary
+next_num = str(last_num + 1).zfill(3)
+folder_name = next_num + "-" + summary + "_" + level + "_L"
 folder_path = os.path.join(result_folder_path, folder_name)
 os.makedirs(folder_path)
 os.makedirs(os.path.join(folder_path, "checkpoints"))
 
-shutil.copyfile(os.path.abspath(__file__),folder_path+"/for_record.py") # 実行したファイルのコピーを作成
+shutil.copyfile(os.path.abspath(__file__), folder_path +
+                "/for_record.py")  # 実行したファイルのコピーを作成
+os.chmod(folder_path + "/for_record.py",
+         SF_IMMUTABLE)  # change to read-only
+
 
 #!モデルの定義
 model = Sequential()
@@ -81,13 +76,14 @@ model.add(Activation('relu'))
 model.add(Dense(env.action_space.n))
 model.add(Activation('linear'))
 
-print("*"*50+"  Model  "+"*"*50)
+print("\n\n")
+print("*" * 50 + "  Model  " + "*" * 50)
 print()
 print(model.summary())
-plot_model(model, to_file=folder_path+"/model.png", show_shapes=True)
+plot_model(model, to_file=folder_path + "/model.png", show_shapes=True)
 
 
-# DQN agentの定義
+# !DQN agentの定義
 memory = SequentialMemory(limit=50000, window_length=1,
                           ignore_episode_boundaries=True)
 policy = EpsGreedyQPolicy(eps=0.1)
@@ -96,28 +92,39 @@ dqn = DQNAgent(model=model, nb_actions=env.action_space.n, memory=memory, nb_ste
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 
-# 学習
+# !ファインチューニング[fine tuning](事前に学習した重みを使う)
+# print("*" * 50 + "  fine tuning  " + "*" * 50)
+# fine_tuning_weight_path=os.path.join(result_folder_path,"your_foldername/weights_final.h5f")
+# print(fine_tuning_weight_path)
+# print()
+
+# dqn.load_weights(fine_tuning_weight_path)
+
+
+# !学習
+print("\n\n")
 print("*" * 50 + "  History  " + "*" * 50)
 print()
 
 MAX_STEPS = 1000000  # 学習ステップ回数
 
-checkpoint_weights_filename = folder_path+"/checkpoints/weights_{step}steps.h5f"
+checkpoint_weights_filename = folder_path + \
+    "/checkpoints/weights_{step}steps.h5f"
 logdir = folder_path
 
-# モデルを保存する頻度
+
 callbacks = [ModelIntervalCheckpoint(
-    checkpoint_weights_filename, interval=100000)]
+    checkpoint_weights_filename, interval=100000)]  # モデルを保存する頻度
+
 callbacks += [tf.keras.callbacks.TensorBoard(log_dir=logdir)]
 history = dqn.fit(env, callbacks=callbacks, nb_steps=MAX_STEPS, visualize=False,
                   verbose=1)
 
-
 # 重みの保存
-dqn.save_weights(folder_path+"/weights_final.h5f", overwrite=False)
+dqn.save_weights(folder_path + "/weights_final.h5f", overwrite=False)
 
 
-# グラフを表示
+# !グラフを表示
 # 1エピソードのstep試行回数
 plt.subplot(2, 1, 1)
 x = []
@@ -141,12 +148,13 @@ plt.plot(x, y)
 plt.ylabel("reward")
 
 plt.xlabel("episode")
-plt.savefig(folder_path+"/step-reward_plt.jpg")
+plt.savefig(folder_path + "/step-reward_plt.jpg")
 plt.show()
 
 
-# 学習結果のテスト
-print("*"*50+"  Test  "+"*"*50)
+# !学習結果のテスト
+print("\n\n")
+print("*" * 50 + "  Test  " + "*" * 50)
 print()
 dqn.test(env, nb_episodes=10, visualize=True)
 
