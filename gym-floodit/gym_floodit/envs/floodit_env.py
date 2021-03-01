@@ -27,17 +27,10 @@ from pygame.locals import *
 
 
 # 各種グローバル変数
-SMALLBOXSIZE = 60  # size is in pixels
-MEDIUMBOXSIZE = 20
-LARGEBOXSIZE = 11
-
-SMALLBOARDSIZE = 6  # size is in boxes
-MEDIUMBOARDSIZE = 17
-LARGEBOARDSIZE = 30
-
-SMALLMAXLIFE = 10  # number of turns
-MEDIUMMAXLIFE = 30
-LARGEMAXLIFE = 64
+BOXSIZE = {"E": 60, "M": 20, "H": 11}
+BOARDSIZE = {"E": 6, "M": 17, "H": 30}
+MAXLIFE = {"E": 10, "M": 30, "H": 64}
+DIFFICULTY = {"E": 0, "M": 1, "H": 2}
 
 FPS = 60
 WINDOWWIDTH = 640
@@ -51,26 +44,26 @@ HARD = 2   # arbitrary but unique value
 
 #          R    G    B
 WHITE = (255, 255, 255)
-DARKGRAY = (70,  70,  70)
-BLACK = (0,   0,   0)
-RED = (255,   0,   0)
-GREEN = (0, 255,   0)
-BLUE = (0,   0, 255)
-YELLOW = (255, 255,   0)
-ORANGE = (255, 128,   0)
-PURPLE = (255,   0, 255)
+DARKGRAY = (70, 70, 70)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+ORANGE = (255, 128, 0)
+PURPLE = (255, 0, 255)
 
 # The first color in each scheme is the background color, the next six are the palette colors.
 COLORSCHEMES = (((150, 200, 255), RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE),
-                ((0, 155, 104),  (97, 215, 164),  (228, 0, 69),  (0, 125, 50),
-                 (204, 246, 0),   (148, 0, 45),    (241, 109, 149)),
-                ((195, 179, 0),  (255, 239, 115), (255, 226, 0), (147, 3, 167),
-                 (24, 38, 176),   (166, 147, 0),   (197, 97, 211)),
-                ((85, 0, 0),     (155, 39, 102),  (0, 201, 13),  (255, 118, 0),
-                 (206, 0, 113),   (0, 130, 9),     (255, 180, 115)),
-                ((191, 159, 64), (183, 182, 208), (4, 31, 183),  (167, 184, 45),
-                 (122, 128, 212), (37, 204, 7),    (88, 155, 213)),
-                ((200, 33, 205), (116, 252, 185), (68, 56, 56),  (52, 238, 83),  (23, 149, 195),  (222, 157, 227), (212, 86, 185)))
+                ((0, 155, 104), (97, 215, 164), (228, 0, 69), (0, 125, 50),
+                 (204, 246, 0), (148, 0, 45), (241, 109, 149)),
+                ((195, 179, 0), (255, 239, 115), (255, 226, 0), (147, 3, 167),
+                 (24, 38, 176), (166, 147, 0), (197, 97, 211)),
+                ((85, 0, 0), (155, 39, 102), (0, 201, 13), (255, 118, 0),
+                 (206, 0, 113), (0, 130, 9), (255, 180, 115)),
+                ((191, 159, 64), (183, 182, 208), (4, 31, 183), (167, 184, 45),
+                 (122, 128, 212), (37, 204, 7), (88, 155, 213)),
+                ((200, 33, 205), (116, 252, 185), (68, 56, 56), (52, 238, 83), (23, 149, 195), (222, 157, 227), (212, 86, 185)))
 
 # 色の設定 ※気にしなくてよい エラー表示専用
 """
@@ -85,7 +78,7 @@ paletteColors = COLORSCHEMES[0][1:]
 
 
 class FlooditEnv(gym.Env):
-    def __init__(self):
+    def __init__(self, level="E", ignore_same_action=False):
         super(FlooditEnv, self).__init__()
 
         # アクションの数の設定
@@ -93,10 +86,13 @@ class FlooditEnv(gym.Env):
 
         # 状態空間の設定, 観測空間(state)の次元
         # (e.g.)状態が3つの時で、それぞれの状態が正規化されている場合、LOW=[0,0,0]、HIGH=[1,1,1]
-        MAP = np.array([[0] * 6 for _ in range(6)])
+        MAP = np.array([[0] * BOARDSIZE[level]
+                        for _ in range(BOARDSIZE[level])])
         self.observation_space = gym.spaces.Box(low=0, high=5, shape=MAP.shape)
 
         self.isFirstRender = True
+        self.ignore_same_action = ignore_same_action
+        self.level = level
 
         self.reset()
 
@@ -104,11 +100,12 @@ class FlooditEnv(gym.Env):
         # シミュレータの初期化処理
 
         # デフォルトのゲームの難易度
-        self.difficulty = EASY
-        self.maxLife = SMALLMAXLIFE
-        self.boardWidth = SMALLBOARDSIZE
-        self.boardHeight = SMALLBOARDSIZE
-        self.boxSize = SMALLBOXSIZE
+        # デフォルトのゲームの難易度
+        self.difficulty = DIFFICULTY[self.level]
+        self.maxLife = MAXLIFE[self.level]
+        self.boardWidth = BOARDSIZE[self.level]
+        self.boardHeight = BOARDSIZE[self.level]
+        self.boxSize = BOXSIZE[self.level]
 
         # 盤面とライフの初期化
         self.mainBoard = self.generateRandomBoard(
@@ -126,17 +123,21 @@ class FlooditEnv(gym.Env):
         isWon = False
         isLose = False
         done = False
+        is_same_action = False
         reward = 0.0
 
         changed_square = self.flood_and_count(self.mainBoard, action)
         if (changed_square == 0):
             reward = -0.5
-            if (not self.isFirstRender):  # レンダリング中は同じ手を選んでも無視する
+            if (self.ignore_same_action):  # レンダリング中は同じ手を選んでも無視する
                 pass
             else:
                 done = True
+                is_same_action = True
         else:
-            reward = changed_square/36
+            reward = changed_square / (BOARDSIZE[self.level] * 2)
+            reward -= 1 / (BOARDSIZE[self.level] * 2) / 10  # 軽微な罰
+
         self.life -= 1
 
         # 勝利or敗北時の描画
@@ -270,7 +271,8 @@ class FlooditEnv(gym.Env):
                     return False  # found a different color, player has not won
         return True
 
-    def generateRandomBoard(self, width, height, difficulty=MEDIUM):  # 盤面の初期化
+    # 盤面の初期化
+    def generateRandomBoard(self, width, height, difficulty=DIFFICULTY["M"]):
         # Creates a board data structure with random colors for each box.
         board = []
         for x in range(width):
@@ -282,13 +284,13 @@ class FlooditEnv(gym.Env):
         # Make board easier by setting some boxes to same color as a neighbor.
 
         # Determine how many boxes to change.
-        if difficulty == EASY:
-            if self.boxSize == SMALLBOXSIZE:
+        if difficulty == DIFFICULTY["E"]:
+            if self.boxSize == BOXSIZE["E"]:
                 boxesToChange = 100
             else:
                 boxesToChange = 1500
         elif difficulty == MEDIUM:
-            if self.boxSize == SMALLBOXSIZE:
+            if self.boxSize == BOXSIZE["E"]:
                 boxesToChange = 5
             else:
                 boxesToChange = 200
@@ -298,23 +300,23 @@ class FlooditEnv(gym.Env):
         # Change neighbor's colors:
         for i in range(boxesToChange):
             # Randomly choose a box whose color to copy
-            x = random.randint(1, width-2)
-            y = random.randint(1, height-2)
+            x = random.randint(1, width - 2)
+            y = random.randint(1, height - 2)
 
             # Randomly choose neighbors to change.
             direction = random.randint(0, 3)
             if direction == 0:  # change left and up neighbor
-                board[x-1][y] = board[x][y]
-                board[x][y-1] = board[x][y]
+                board[x - 1][y] = board[x][y]
+                board[x][y - 1] = board[x][y]
             elif direction == 1:  # change right and down neighbor
-                board[x+1][y] = board[x][y]
-                board[x][y+1] = board[x][y]
+                board[x + 1][y] = board[x][y]
+                board[x][y + 1] = board[x][y]
             elif direction == 2:  # change right and up neighbor
-                board[x][y-1] = board[x][y]
-                board[x+1][y] = board[x][y]
+                board[x][y - 1] = board[x][y]
+                board[x + 1][y] = board[x][y]
             else:  # change left and down neighbor
-                board[x][y+1] = board[x][y]
-                board[x-1][y] = board[x][y]
+                board[x][y + 1] = board[x][y]
+                board[x - 1][y] = board[x][y]
         return board
 
     def quit(self):
@@ -377,7 +379,7 @@ class FlooditEnv(gym.Env):
                 pygame.draw.rect(tempSurf, (r, g, b, transparency),
                                  (left, top, self.boxSize, self.boxSize))
         left, top = self.leftTopPixelCoordOfBox(0, 0)
-        pygame.draw.rect(tempSurf, BLACK, (left-1, top-1, self.boxSize *
+        pygame.draw.rect(tempSurf, BLACK, (left - 1, top - 1, self.boxSize *
                                            self.boardWidth + 1, self.boxSize * self.boardHeight + 1), 1)
         self.DISPLAYSURF.blit(tempSurf, (0, 0))
 
@@ -391,8 +393,8 @@ class FlooditEnv(gym.Env):
             top = WINDOWHEIGHT - PALETTESIZE - 10
             pygame.draw.rect(
                 self.DISPLAYSURF, paletteColors[i], (left, top, PALETTESIZE, PALETTESIZE))
-            pygame.draw.rect(self.DISPLAYSURF, bgColor,   (left + 2,
-                                                           top + 2, PALETTESIZE - 4, PALETTESIZE - 4), 2)
+            pygame.draw.rect(self.DISPLAYSURF, bgColor, (left + 2,
+                                                         top + 2, PALETTESIZE - 4, PALETTESIZE - 4), 2)
 
     def drawLifeMeter(self, currentLife):  # 引数として与えられたライフを描画
         lifeBoxSize = int((WINDOWHEIGHT - 40) / self.maxLife)
