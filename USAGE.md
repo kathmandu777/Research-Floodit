@@ -4,14 +4,14 @@
 ```
 conda activate RL
 cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\gym-floodit
-python  C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\gym-floodit\floodit-DQN.py 
+python  C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\gym-floodit\floodit-learning.py 
 tensorboard --logdir ../result/DQN                                                                          
 ```
 
 ```
 conda activate RL-gpu
 cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\excute file
-python floodit-DQN.py
+python floodit-learning.py
 
 cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\result
 tensorboard --logdir DDQN or DQN
