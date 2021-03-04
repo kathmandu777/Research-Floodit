@@ -117,7 +117,7 @@ class FlooditEnv(gym.Env):
         if (not self.isFirstRender):
             self.render()
 
-        return self.mainBoard
+        return np.array(self.mainBoard)
 
     def step(self, action):
         isWon = False
