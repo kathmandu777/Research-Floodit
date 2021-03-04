@@ -223,3 +223,15 @@ cuDNN=7.6.5(for 10.1)
 
 - demoリファクタリング
 - DQNリファクタリング
+
+### 2021/03/02
+- torchへの移行を開始
+- anaconda環境ではpythonファイルを絶対パスで実行できない
+- RuntimeError: Expected 4-dimensional input for 4-dimensional weight [32, 17, 8, 8], but got 3-dimensional input of size [1, 17, 17] instead ==> Mediumの時
+- RuntimeError: Expected 4-dimensional input for 4-dimensional weight [32, 6, 8, 8], but got 3-dimensional input of size [1, 6, 6] instead ==> EASYの時
+
+### 2021/03/03
+- 進捗ナシ
+
+### 2021/03/04
+- torch実行成功
