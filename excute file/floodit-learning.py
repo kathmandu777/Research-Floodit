@@ -27,7 +27,7 @@ sys.path.pop()
 
 #!FloodItの初期化
 # HIGH:H or MEDIUM:M or EASY:E
-level = "E"  # ?適宜変更
+level = "M"  # ?適宜変更
 
 env = gym.make("floodit-v0", level=level)  # envの初期化（インスタンス作成）
 print("\n\n")
@@ -117,7 +117,7 @@ callbacks = [ModelIntervalCheckpoint(
 
 callbacks += [tf.keras.callbacks.TensorBoard(log_dir=logdir)]
 history = dqn.fit(env, callbacks=callbacks, nb_steps=MAX_STEPS, visualize=False,
-                  verbose=1)
+                  verbose=1, log_interval=100)
 
 # 重みの保存
 dqn.save_weights(folder_path + "/weights_final.h5f", overwrite=False)
