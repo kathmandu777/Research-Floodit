@@ -53,10 +53,10 @@ print()
 
 
 #!各データ保存用フォルダの作成
-summary = "test"  # ?毎回変更
+summary = "CNN-1"  # ?毎回変更
 
-result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
-result_folder_path += "/Torch"  # ?適宜変更
+result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/data/Torch"
+result_folder_path += "/Dueling"  # ?適宜変更
 
 file_and_folder = os.listdir(result_folder_path)
 dir_list = [f for f in file_and_folder if os.path.isdir(

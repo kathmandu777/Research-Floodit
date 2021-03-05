@@ -24,7 +24,7 @@ sys.path.pop()
 demo_dir_name = "002_NN-6_E_L"  # ?実行したい学習結果のフォルダ
 demo_steps = 0  # ?実行したい学習結果のステップ数 final=0
 
-result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
+result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/data/keras"
 result_folder_path += "/DQN"  # ?適宜変更
 
 # ?同じ手の時にリセットすかどうか

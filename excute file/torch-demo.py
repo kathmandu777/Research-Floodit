@@ -19,11 +19,11 @@ import gym_floodit  # nopep
 sys.path.pop()
 
 #!読み込みフォルダ
-demo_dir_name = "015_test_E_L"  # ?実行したい学習結果のフォルダ
+demo_dir_name = "002_CNN-1_E_L"  # ?実行したい学習結果のフォルダ
 demo_steps = 2180000  # ?実行したい学習結果のステップ数 final=0
 
-result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
-result_folder_path += "/Torch"  # ?適宜変更
+result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/data/Torch"
+result_folder_path += "/Dueling"  # ?適宜変更
 
 
 #!Torch

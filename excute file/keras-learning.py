@@ -41,7 +41,7 @@ print()
 #!各データ保存用フォルダの作成
 summary = "CNN-7"  # ?毎回変更
 
-result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
+result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/data/keras"
 result_folder_path += "/DDQN"  # ?適宜変更
 
 file_and_folder = os.listdir(result_folder_path)
