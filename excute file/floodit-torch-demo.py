@@ -19,8 +19,8 @@ import gym_floodit  # nopep
 sys.path.pop()
 
 #!読み込みフォルダ
-demo_dir_name = "016_test_E_L"  # ?実行したい学習結果のフォルダ
-demo_steps = 0  # ?実行したい学習結果のステップ数 final=0
+demo_dir_name = "015_test_E_L"  # ?実行したい学習結果のフォルダ
+demo_steps = 2180000  # ?実行したい学習結果のステップ数 final=0
 
 result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/result"
 result_folder_path += "/Torch"  # ?適宜変更
@@ -131,12 +131,36 @@ net.load_state_dict(torch.load(load_path))
 
 #!demo
 obs = env.reset()
-for _ in range(64):
+log = []
+log_child = []
+num_done = 0
+while(num_done < 5):  # 5回分のデータをとる
     env.render()
     action = net.act(obs.to(device), epsilon=0.0)
     obs, reward, done, info = env.step(action)
-    print(reward, info)
+    print("{:3} {:10.7f}".format(info["changed_square"], reward))
+    log_child.append([reward, info])
 
     if done:
         env.render()
         obs = env.reset()
+        log.append(log_child)
+        log_child = []
+        num_done += 1
+        print()
+
+with open(os.path.join(result_folder_path, demo_dir_name) + "/result.txt", "w", encoding='UTF-8') as f:
+    f.write("実験結果\n")
+    f.write("life : changed_square, reward = result \n\n")
+    for log_child in log:
+        for i in range(len(log_child)):
+            f.write(str(log_child[i][1]["life"]) + " : ")
+            f.write("{:2}, ".format(log_child[i][1]["changed_square"]))
+            f.write("{:7.4f} ".format(log_child[i][0]))  # reward
+            if (log_child[i][1]["isWon"] == True):
+                f.write("Win\n")
+            elif (log_child[i][1]["isLose"] == True):
+                f.write("Lose\n")
+            else:
+                f.write("\n")
+        f.write("\n")
