@@ -294,8 +294,9 @@ def update(batch_size, beta):
 # TensorBoardをColab内に起動. リアルタイムに学習経過が更新されます
 writer = SummaryWriter(folder_path)
 
-total_step = 0
+
 #!学習
+total_step = 0
 try:
     for episode in range(n_episodes):
         obs = env.reset()
