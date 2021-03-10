@@ -20,6 +20,26 @@ import gym_floodit  # nopep
 sys.path.pop()
 
 
+#!Seed値の固定
+
+
+def fix_seed(seed):
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    # random
+    random.seed(seed)
+    # Numpy
+    np.random.seed(seed)
+    # Pytorch
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False  # 処理速度は落ちる
+
+
+SEED = 42  # ?適宜変更
+fix_seed(SEED)
+
+
 #!FloodItの初期化
 # HIGH:H or MEDIUM:M or EASY:E
 level = "E"  # ?適宜変更
@@ -41,8 +61,20 @@ class TorchFrame(gym.ObservationWrapper):
         return torch.as_tensor(obs, dtype=torch.float).unsqueeze(0)
 
 
-env = gym.make("floodit-v0", level=level)  # envの初期化（インスタンス作成）
+env = gym.make(
+    "floodit-v0",
+    level=level,
+    ignore_same_action=True,
+    visualize=False,
+    win_reward=10,
+    lose_penalty=5,
+    same_action_penalty=0.1,
+    time_penalty=None,  # None=1 / (BOARDSIZE[self.level] * 2) / 10
+    action_reward=None  # None=self.changed_square /(BOARDSIZE[self.level] * 2)
+)
 env = TorchFrame(env)  # ラッパーの追加
+env.seed(SEED)
+env.action_space.seed(SEED)
 
 print("\n\n")
 print("*" * 50 + "  FloodIt  " + "*" * 50)
@@ -53,10 +85,10 @@ print()
 
 
 #!各データ保存用フォルダの作成
-summary = "CNN-1"  # ?毎回変更
+summary = "Big-CNN"  # ?毎回変更
 
 result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/data/Torch"
-result_folder_path += "/Dueling"  # ?適宜変更
+result_folder_path += "/Dueling2"  # ?適宜変更
 
 file_and_folder = os.listdir(result_folder_path)
 dir_list = [f for f in file_and_folder if os.path.isdir(
@@ -150,36 +182,41 @@ class CNNQNetwork(nn.Module):
 
         # Dueling Networkでも, 畳込み部分は共有する
         self.conv_layers = nn.Sequential(
-            nn.Conv2d(state_shape[0], 32, kernel_size=3,
+            nn.Conv2d(state_shape[0], 64, kernel_size=3,
+                      stride=1),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=2,
+                      stride=1),
+            nn.ReLU(),
+            nn.Conv2d(64, 32, kernel_size=2,
                       stride=1),
             nn.ReLU(),
         )
 
         cnn_out_size = self.check_cnn_size(state_shape)
-        print("cnn_out_size=", cnn_out_size)
         # Dueling Networkのための分岐した全結合層
         # 状態価値
         self.fc_state = nn.Sequential(
-            nn.Linear(cnn_out_size, 64),
+            nn.Linear(cnn_out_size, 256),
             nn.ReLU(),
-            nn.Linear(64, 32),
+            nn.Linear(256, 64),
             nn.ReLU(),
-            nn.Linear(32, 1)
+            nn.Linear(64, 1)
         )
 
         # アドバンテージ
         self.fc_advantage = nn.Sequential(
-            nn.Linear(cnn_out_size, 64),
+            nn.Linear(cnn_out_size, 256),
             nn.ReLU(),
-            nn.Linear(64, 32),
+            nn.Linear(256, 64),
             nn.ReLU(),
-            nn.Linear(32, n_action)
+            nn.Linear(64, n_action)
         )
 
     def check_cnn_size(self, shape):
-        shape = torch.FloatTensor(1, 1, shape[1], shape[2])
+        shape = torch.FloatTensor(1, shape[0], shape[1], shape[2])
         out = self.conv_layers(shape).size()
-        out = out[0] * out[1] * out[2] * out[3]
+        out = np.prod(np.array(out))
         return out
 
     def forward(self, obs):
@@ -208,7 +245,7 @@ class CNNQNetwork(nn.Module):
 #!リプレイバッファの宣言
 # ? パラメータ
 buffer_size = 100000  # リプレイバッファに入る経験の最大数
-initial_buffer_size = 100  # 学習を開始する最低限の経験の数
+initial_buffer_size = 1000  # 学習を開始する最低限の経験の数
 replay_buffer = PrioritizedReplayBuffer(buffer_size)
 
 
@@ -217,7 +254,7 @@ net = CNNQNetwork(env.observation_space.shape,
                   n_action=env.action_space.n).to(device)
 target_net = CNNQNetwork(env.observation_space.shape,
                          n_action=env.action_space.n).to(device)
-target_update_interval = 2000  # ? 学習安定化のために用いるターゲットネットワークの同期間隔(Episode)
+target_update_interval = 500  # ? 学習安定化のために用いるターゲットネットワークの同期間隔(Episode)
 
 
 #!オプティマイザとロス関数の宣言
@@ -228,32 +265,30 @@ loss_func = nn.SmoothL1Loss(reduction='none')
 
 # ? ハイパーパラメータ
 gamma = 0.99  # 割引率
-batch_size = 1
-n_episodes = 1000000  # 学習を行うエピソード数
+batch_size = 64
+n_episodes = 50000  # 学習を行うエピソード数
 
 # ? Prioritized Experience Replayのためのパラメータβ
 beta_begin = 0.4
 beta_end = 1.0
-beta_decay = n_episodes
-# beta_beginから始めてbeta_endまでbeta_decayかけて線形に増やす
+beta_decay = n_episodes - (n_episodes / 100)
 
 
-def beta_func(step):
+def beta_func(episode):
     return min(beta_end, beta_begin +
-               (beta_end - beta_begin) * (step / beta_decay))
+               (beta_end - beta_begin) * (episode / beta_decay))
 
 
 # ? 探索のためのパラメータε
 
 epsilon_begin = 1.0
-epsilon_end = 0.01
-epsilon_decay = n_episodes  # step
-# epsilon_beginから始めてepsilon_endまでepsilon_decayかけて線形に減らす
+epsilon_end = 0.05
+epsilon_decay = n_episodes - (n_episodes / 100)
 
 
-def epsilon_func(step):
+def epsilon_func(episode):
     return max(epsilon_end, epsilon_begin -
-               (epsilon_begin - epsilon_end) * (step / epsilon_decay))
+               (epsilon_begin - epsilon_end) * (episode / epsilon_decay))
 
 
 def update(batch_size, beta):
@@ -291,12 +326,18 @@ def update(batch_size, beta):
     return loss.item()
 
 
-# TensorBoardをColab内に起動. リアルタイムに学習経過が更新されます
+#!TensorBoardを設定
 writer = SummaryWriter(folder_path)
-
+# netの可視化
+obs = env.reset()
+writer.add_graph(net, obs.float().to(device).unsqueeze(0))
 
 #!学習
 total_step = 0
+total_reward = 0
+win_num = 0
+lose_num = 0
+
 try:
     for episode in range(n_episodes):
         obs = env.reset()
@@ -306,10 +347,11 @@ try:
 
         while not done:
             # ε-greedyで行動を選択
-            action = net.act(obs.to(device), epsilon_func(total_step))
+            action = net.act(obs.to(device), epsilon_func(episode))
             # 環境中で実際に行動
             next_obs, reward, done, info = env.step(action)
             episode_reward += reward
+            total_reward += reward
 
             # リプレイバッファに経験を蓄積
             replay_buffer.push([obs, action, reward, next_obs, done])
@@ -317,9 +359,8 @@ try:
 
             # ネットワークを更新
             if len(replay_buffer) > initial_buffer_size:
-                loss = update(batch_size, beta_func(total_step))
-            else:
-                loss = None
+                loss = update(batch_size, beta_func(episode))
+                writer.add_scalar('Loss', loss, total_step)
 
             episode_step += 1
             total_step += 1
@@ -328,44 +369,79 @@ try:
             if (total_step) % target_update_interval == 0:
                 target_net.load_state_dict(net.state_dict())
 
-            # 定期的に重みを保存
-            if (total_step) % 10000 == 0:
-                torch.save(net.state_dict(), folder_path +
-                           "/checkpoints/weights_{}steps.pth".format(total_step))
-
             writer.add_scalar('Changed_square',
                               info["changed_square"], total_step)
-            if (loss != None):
-                writer.add_scalar('Loss',
-                                  loss, total_step)
+
+        if (info["isWon"]):
+            win_num += 1
+        elif (info["isLose"]):
+            lose_num += 1
 
         if (episode + 1) % 100 == 0:
-            print('Episode: {},  Episode-Step: {},  Reward: {}'.format(episode +
-                                                                       1, episode_step, episode_reward))
+            print('Episode: {},  Episode-Step: {},  EpisodeReward: {}'.format(episode +
+                                                                              1, episode_step, episode_reward))
 
+        writer.add_scalar('Total-Reward', total_reward, episode)
         writer.add_scalar('Episode-Reward', episode_reward, episode)
         writer.add_scalar('Episode-Step', episode_step, episode)
-        writer.add_scalar('Won', info["isWon"], episode)
-        writer.add_scalar('Lose', info["isLose"], episode)
+        writer.add_scalar('Win-Rate', win_num / (episode + 1) * 100, episode)
+        writer.add_scalar('Lose-Rate', lose_num / (episode + 1) * 100, episode)
 
-    writer.close()
+        # 定期的に重みを保存
+        if (episode + 1) % 2000 == 0:
+            torch.save(net.state_dict(), folder_path +
+                       "/checkpoints/weights_{}episodes.pth".format(episode + 1))
 
 except KeyboardInterrupt:
     print("学習中断")
 
+writer.close()
 torch.save(net.state_dict(), folder_path + "/weights_final.pth")
 
 
 #!学習結果の確認
-env = gym.make("floodit-v0", level=level, ignore_same_action=True)
-env = TorchFrame(env)
 
-for _ in range(64):
-    env.render()
-    action = net.act(obs.to(device), epsilon=0.0)
-    obs, reward, done, info = env.step(action)
-    print(reward, info)
+env = gym.make(
+    "floodit-v0",
+    level=level,
+    ignore_same_action=True,
+    visualize=True,
+    win_reward=10,
+    lose_penalty=5,
+    same_action_penalty=0.1,
+    time_penalty=None,  # None=1 / (BOARDSIZE[self.level] * 2) / 10
+    action_reward=None  # None=self.changed_square /(BOARDSIZE[self.level] * 2)
+)
+env = TorchFrame(env)  # ラッパーの追加
+env.seed(SEED)
+env.action_space.seed(SEED)
 
-    if done:
+
+experiment_times = 5  # ?適宜変更
+
+win_num = 0
+lose_num = 0
+
+for i in range(experiment_times):
+    done = False
+    obs = env.reset()
+    while not done:
         env.render()
-        obs = env.reset()
+        action = net.act(obs.to(device), epsilon=0.0)
+        obs, reward, done, info = env.step(action)
+        print(reward, info)
+
+    print(i, end=" : ")
+    if (info["isWon"]):
+        win_num += 1
+    elif (info["isLose"]):
+        lose_num += 1
+
+print()
+print("Result ({}times)".format(experiment_times))
+print("-------------------")
+win_rate = win_num / (experiment_times) * 100
+lose_rate = lose_num / (experiment_times) * 100
+print("win_rate:", win_rate)
+print("lose_rate", lose_rate)
+print("sum:", win_rate + lose_rate)

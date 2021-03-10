@@ -20,6 +20,7 @@ sys.path.pop()
 
 #!読み込みフォルダ
 demo_dir_name = "002_CNN-1_E_L"  # ?実行したい学習結果のフォルダ
+level = demo_dir_name[-3]
 demo_steps = 2180000  # ?実行したい学習結果のステップ数 final=0
 
 result_folder_path = "C:/Users/kator/OneDrive/ドキュメント/ResearchFloodit/data/Torch"
@@ -130,28 +131,67 @@ net = CNNQNetwork(env.observation_space.shape,
 net.load_state_dict(torch.load(load_path))
 
 #!demo
-obs = env.reset()
-log = []
-log_child = []
-num_done = 0
-while(num_done < 5):  # 5回分のデータをとる
-    env.render()
-    action = net.act(obs.to(device), epsilon=0.0)
-    obs, reward, done, info = env.step(action)
-    print("{:3} {:10.7f}".format(info["changed_square"], reward))
-    log_child.append([reward, info])
+SEED = 42
+env = gym.make(
+    "floodit-v0",
+    level=level,
+    ignore_same_action=True,
+    visualize=True,
+    win_reward=10,
+    lose_penalty=5,
+    same_action_penalty=0.1,
+    time_penalty=None,  # None=1 / (BOARDSIZE[self.level] * 2) / 10
+    action_reward=None  # None=self.changed_square /(BOARDSIZE[self.level] * 2)
+)
+env = TorchFrame(env)  # ラッパーの追加
+env.seed(SEED)
+env.action_space.seed(SEED)
 
-    if done:
+
+experiment_times = 5  # ?適宜変更
+
+win_num = 0
+lose_num = 0
+log = []
+for i in range(experiment_times):
+    print(i, end="times\n")
+    done = False
+    obs = env.reset()
+    log_child = []
+    while not done:
         env.render()
-        obs = env.reset()
-        log.append(log_child)
-        log_child = []
-        num_done += 1
-        print()
+        action = net.act(obs.to(device), epsilon=0.0)
+        obs, reward, done, info = env.step(action)
+
+        print("{:3} {:10.7f}".format(info["changed_square"], reward))
+        log_child.append([reward, info])
+
+    if (info["isWon"]):
+        win_num += 1
+    elif (info["isLose"]):
+        lose_num += 1
+    log.append(log_child)
+    print()
+
+
+print()
+print("Result ({}times)".format(experiment_times))
+print("-------------------")
+win_rate = win_num / (experiment_times) * 100
+lose_rate = lose_num / (experiment_times) * 100
+print("win_rate:", win_rate)
+print("lose_rate", lose_rate)
+print("sum:", win_rate + lose_rate)
+
 
 with open(os.path.join(result_folder_path, demo_dir_name) + "/result.txt", "w", encoding='UTF-8') as f:
-    f.write("実験結果\n")
+    f.write("Result ({}times)".format(experiment_times) + "\n")
+    f.write("win_rate: " + str(win_rate) + "\n")
+    f.write("lose_rate: " + str(lose_rate) + "\n")
+    f.write("sum: " + str(win_rate + lose_rate) + "\n")
+    f.write("---------------------------------\n")
     f.write("life : changed_square, reward = result \n\n")
+
     for log_child in log:
         for i in range(len(log_child)):
             f.write(str(log_child[i][1]["life"]) + " : ")
