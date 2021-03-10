@@ -1,19 +1,6 @@
 # FloodItをOpenAIGymのAPI形式に合わせて作成し登録する
 # pygameによって作成されたinkspillを改良(https://github.com/asweigart/making-games-with-python-and-pygame/blob/master/inkspill/inkspill.py)
 
-"""
-設計：
-    環境状態(observation)=self.mainBoard
-
-関数定義:
-    def reset(self):
-        return observation
-
-    def step(self, action):
-        return observation, reward, done, info
-
-*詳しくはREADME.md参照
-"""
 
 import gym
 from gym import error, spaces, utils
@@ -78,7 +65,7 @@ paletteColors = COLORSCHEMES[0][1:]
 
 
 class FlooditEnv(gym.Env):
-    def __init__(self, level="E", ignore_same_action=False):
+    def __init__(self, level="E", visualize=False, ignore_same_action=False, win_reward=10, lose_penalty=5, same_action_penalty=0.1, time_penalty=None, action_reward=None):
         super(FlooditEnv, self).__init__()
 
         # アクションの数の設定
@@ -90,87 +77,11 @@ class FlooditEnv(gym.Env):
                         for _ in range(BOARDSIZE[level])])
         self.observation_space = gym.spaces.Box(low=0, high=5, shape=MAP.shape)
 
-        self.isFirstRender = True
         self.ignore_same_action = ignore_same_action
         self.level = level
 
-        self.reset()
-
-    def reset(self):
-        # シミュレータの初期化処理
-
-        # デフォルトのゲームの難易度
-        # デフォルトのゲームの難易度
-        self.difficulty = DIFFICULTY[self.level]
-        self.maxLife = MAXLIFE[self.level]
-        self.boardWidth = BOARDSIZE[self.level]
-        self.boardHeight = BOARDSIZE[self.level]
-        self.boxSize = BOXSIZE[self.level]
-
-        # 盤面とライフの初期化
-        self.mainBoard = self.generateRandomBoard(
-            self.boardWidth, self.boardHeight, self.difficulty)
-        self.life = self.maxLife
-        self.lastAction = None
-        self.continueing_square = 0
-
-        if (not self.isFirstRender):
-            self.render()
-
-        return np.array(self.mainBoard)
-
-    def step(self, action):
-        isWon = False
-        isLose = False
-        done = False
-        is_same_action = False
-        reward = 0.0
-
-        changed_square = self.flood_and_count(self.mainBoard, action)
-        if (changed_square == 0):
-            reward = -0.5
-            if (self.ignore_same_action):  # レンダリング中は同じ手を選んでも無視する
-                pass
-            else:
-                done = True
-                is_same_action = True
-        else:
-            reward = changed_square / (BOARDSIZE[self.level] * 2)
-            reward -= 1 / (BOARDSIZE[self.level] * 2) / 10  # 軽微な罰
-
-        self.life -= 1
-
-        # 勝利or敗北時の描画
-        if self.hasWon(self.mainBoard):
-            reward = 1
-            done = True
-            isWon = True
-            if (not self.isFirstRender):
-                for i in range(2):
-                    self.flashBorderAnimation(WHITE, self.mainBoard)
-                pygame.time.wait(200)
-        elif self.life == 0:
-            reward = -1
-            done = True
-            isLose = True
-            if (not self.isFirstRender):
-                for i in range(2):
-                    self.flashBorderAnimation(BLACK, self.mainBoard)
-                pygame.time.wait(200)
-
-        info = {"isWon": isWon, "isLose": isLose,
-                "changed_square": changed_square, "life": self.life}
-        #info = {"isWon": isWon, "isLose": isLose,"changed_square": changed_square, "life": self.life, "isQuit": self.checkReset()}
-
-        return np.array(self.mainBoard), reward, done, info
-
-    def render(self, mode='human', close=False):
-        # シミュレータ環境の描画処理
-        if mode != 'human':
-            raise NotImplementedError()
-
-        if (self.isFirstRender):
-            self.isFirstRender = False
+        self.visualize = visualize
+        if self.visualize:
             # pygame の描画関連
             global FPSCLOCK, LOGOIMAGE, SPOTIMAGE, SETTINGSIMAGE, SETTINGSBUTTONIMAGE, RESETBUTTONIMAGE
 
@@ -191,9 +102,94 @@ class FlooditEnv(gym.Env):
                                                                  'inkspillsettingsbutton.png'))
             RESETBUTTONIMAGE = pygame.image.load(os.path.join(current_path,
                                                               'inkspillresetbutton.png'))
-
-            # キャプションとマウスの位置の設定
             pygame.display.set_caption('Ink Spill for machine-learning')
+
+        #reward and penalty
+        if time_penalty == None:
+            self.time_penalty = 1 / (BOARDSIZE[self.level] * 2) / 10
+        else:
+            self.time_penalty = time_penalty
+
+        self.same_action_penalty = same_action_penalty
+        self.win_reward = win_reward
+        self.lose_penalty = lose_penalty
+        self.action_reward = action_reward
+
+        # self.reset()
+
+    def reset(self):
+        # シミュレータの初期化処理
+
+        # デフォルトのゲームの難易度
+        self.difficulty = DIFFICULTY[self.level]
+        self.maxLife = MAXLIFE[self.level]
+        self.boardWidth = BOARDSIZE[self.level]
+        self.boardHeight = BOARDSIZE[self.level]
+        self.boxSize = BOXSIZE[self.level]
+
+        # 盤面とライフの初期化
+        self.mainBoard = self.generateRandomBoard(
+            self.boardWidth, self.boardHeight, self.difficulty)
+        self.life = self.maxLife
+        self.lastAction = None
+        self.continueing_square = 0
+
+        if (self.visualize):
+            self.render()
+
+        return np.array(self.mainBoard)
+
+    def step(self, action):
+        isWon = False
+        isLose = False
+        done = False
+        is_same_action = False
+        reward = 0.0
+
+        changed_square = self.flood_and_count(self.mainBoard, action)
+        if (changed_square == 0):
+            reward = -self.same_action_penalty
+            if (self.ignore_same_action):  # 同じ手を選んでも無視する
+                pass
+            else:
+                done = True
+            is_same_action = True
+        else:
+            if self.action_reward == None:
+                reward += changed_square / (BOARDSIZE[self.level] * 2)
+            else:
+                reward += self.action_reward
+            reward -= self.time_penalty  # 軽微な罰
+
+        self.life -= 1
+
+        # 勝利or敗北時の描画
+        if self.hasWon(self.mainBoard):
+            reward += self.win_reward
+            done = True
+            isWon = True
+            if (self.visualize):
+                for i in range(2):
+                    self.flashBorderAnimation(WHITE, self.mainBoard)
+                pygame.time.wait(200)
+        elif self.life == 0:
+            reward -= self.lose_penalty
+            done = True
+            isLose = True
+            if (self.visualize):
+                for i in range(2):
+                    self.flashBorderAnimation(BLACK, self.mainBoard)
+                pygame.time.wait(200)
+
+        info = {"isWon": isWon, "isLose": isLose,
+                "changed_square": changed_square, "life": self.life}
+
+        return np.array(self.mainBoard), reward, done, info
+
+    def render(self, mode='human', close=False):
+        # シミュレータ環境の描画処理
+        if mode != 'human':
+            raise NotImplementedError()
 
         pygame.event.get()  # 応答なし回避のため
 
@@ -204,7 +200,7 @@ class FlooditEnv(gym.Env):
         self.drawPalettes()
         pygame.display.update()
         FPSCLOCK.tick(FPS)
-        pygame.time.wait(500)
+        pygame.time.wait(300)
 
 
 #### don't care ##############################
