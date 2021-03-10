@@ -18,6 +18,15 @@ tensorboard --logdir DDQN or DQN
 
 ```
 
+```
+conda activate RL-torch
+cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\excute file
+python torch-learning.py
+
+cd C:\Users\kator\OneDrive\ドキュメント\ResearchFloodit\data
+tensorboard --logdir dir_name
+
+```
 ## model
 (全矢印-1)/2=層 と定義
 activationが単体で書かれていない時: 全矢印-Input-Reshape
